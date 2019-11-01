@@ -78,6 +78,11 @@ public class MainActivity extends AppCompatActivity
                 slimeXPosition + frameWidth,
                 frameHeight);
 
+        public float getX()
+        {
+            return slimeXPosition;
+        }
+
         public GameView(Context context) {
             super(context);
 
