@@ -207,10 +207,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    Story story;
+
     @Override
     protected void onResume() {
         super.onResume();
         gameView.resume();
+        story.playGame();
     }
 
     @Override

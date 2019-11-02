@@ -1,6 +1,7 @@
 package com.example.storygame;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +13,12 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 
-public class Story
-{
+public abstract class Story extends Context {
     MainActivity.GameView gameView;
 
     View curView;
+
+    String name;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,11 +38,11 @@ public class Story
         {
             textView.setText("Hello Adventurer!");
             handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    textView.setText("Welcome to the Spooky Dungeon!");
-                }
-            }, 5000);
+            @Override
+            public void run() {
+                textView.setText("Welcome to the Spooky Dungeon!");
+            }
+        }, 5000);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -50,10 +52,10 @@ public class Story
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-            final EditText et = new EditText(this);
+            final EditText editText = curView.findViewById(R.id.name);
 
             // set prompts.xml to alertdialog builder
-            alertDialogBuilder.setView(et);
+            alertDialogBuilder.setView(editText);
 
             // set dialog message
             alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -65,6 +67,9 @@ public class Story
             AlertDialog alertDialog = alertDialogBuilder.create();
             // show it
             alertDialog.show();
+            String greeting = "Nice to meet you " + editText + "!";
+            textView.setText(greeting);
+
         }
     }
 }
