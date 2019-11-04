@@ -13,8 +13,8 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 
-public abstract class Story extends Context {
-    MainActivity.GameView gameView;
+public class Story {
+    static MainActivity.GameView gameView;
 
     View curView;
 
@@ -50,7 +50,7 @@ public abstract class Story extends Context {
                 }
             }, 5000);
 
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(gameView);
 
             final EditText editText = curView.findViewById(R.id.name);
 
@@ -69,6 +69,19 @@ public abstract class Story extends Context {
             alertDialog.show();
             String greeting = "Nice to meet you " + editText + "!";
             textView.setText(greeting);
+            gameView.changeCanvas(1);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textView.setText("If you're looking for treasure,");
+                }
+            }, 5000);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textView.setText("you'll find it in the bottom right corner.");
+                }
+            }, 5000);
 
         }
     }

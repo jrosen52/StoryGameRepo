@@ -23,12 +23,17 @@ public class MainActivity extends AppCompatActivity
 {
 
     GameView gameView;
+    Story story;
+
+    public RectF chest1;
+    public RectF chest2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         gameView = new GameView(this);
+        story = new Story();
         setContentView(gameView);
 
     }
@@ -67,6 +72,23 @@ public class MainActivity extends AppCompatActivity
 
         private int frameLengthInMilliseconds = 100;
 
+        int green = Color.argb(255, 120, 197, 87);
+        int blue = Color.argb(255, 93, 142, 240);
+        int red = Color.argb(255, 240, 65, 93);
+        int yellow = Color.argb(255, 228, 235, 42);
+        int orange = Color.argb(255, 250, 193, 58);
+        int purple = Color.argb(255, 225, 58, 250);
+        int white = Color.argb(255, 225, 255, 255);
+        int black = Color.argb(255, 0, 0, 0);
+
+        int colNum = 0;
+
+        int colors[] = {Color.argb(255, 0, 0, 0),Color.argb(255, 225, 255, 255),
+                Color.argb(255, 120, 197, 87),Color.argb(255, 93, 142, 240),
+                Color.argb(255, 240, 65, 93), Color.argb(255, 228, 235, 42),
+                Color.argb(255, 250, 193, 58), Color.argb(255, 225, 58, 250)};
+
+
         private Rect frameToDraw = new Rect(
                 0,
                 0,
@@ -89,6 +111,17 @@ public class MainActivity extends AppCompatActivity
             ourHolder = getHolder();
             paint = new Paint();
 
+            chest1 = new RectF(0,0,00,0);
+            chest2 = new RectF(50,50,50,50);
+
+            paint.setColor(blue);
+
+            Canvas.drawRect(chest1, paint);
+
+            paint.setColor(blue);
+
+            Canvas.drawRect(chest2, paint);
+
             // Load Bob from his .png file
             bitmapSlime = BitmapFactory.decodeResource(this.getResources(), R.drawable.slime);
             bitmapSlime = Bitmap.createScaledBitmap(bitmapSlime,
@@ -96,6 +129,11 @@ public class MainActivity extends AppCompatActivity
                     frameHeight,
                     false);
 
+        }
+
+        public void changeCanvas(int num)
+        {
+            colNum = num;
         }
 
         @Override
@@ -149,7 +187,8 @@ public class MainActivity extends AppCompatActivity
             {
                 canvas = ourHolder.lockCanvas();
 
-                canvas.drawColor(Color.argb(255,  26, 128, 182));
+                //canvas.drawColor(Color.argb(255,  26, 128, 182));
+                canvas.drawColor(colors[colNum]);
 
                 paint.setColor(Color.argb(255,  249, 129, 0));
 
@@ -206,8 +245,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
-    Story story;
 
     @Override
     protected void onResume() {
