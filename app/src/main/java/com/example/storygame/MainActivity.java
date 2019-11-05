@@ -2,7 +2,9 @@ package com.example.storygame;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,6 +21,7 @@ import android.view.SurfaceView;
 
 
 import android.os.Bundle;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -27,6 +31,10 @@ public class MainActivity extends AppCompatActivity
 
     public RectF chest1;
     public RectF chest2;
+
+    public String playerName;
+
+    public boolean nameAsked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,11 +124,11 @@ public class MainActivity extends AppCompatActivity
 
             paint.setColor(blue);
 
-            Canvas.drawRect(chest1, paint);
+            //Canvas.drawRect(chest1, paint);
 
             paint.setColor(blue);
 
-            Canvas.drawRect(chest2, paint);
+            //Canvas.drawRect(chest2, paint);
 
             // Load Bob from his .png file
             bitmapSlime = BitmapFactory.decodeResource(this.getResources(), R.drawable.slime);
@@ -187,6 +195,24 @@ public class MainActivity extends AppCompatActivity
             {
                 canvas = ourHolder.lockCanvas();
 
+                final Handler handler = new Handler();
+
+                if(nameAsked == true)
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                    alert.setMessage("Your Name");
+                    final EditText input = new EditText(MainActivity.this);
+                    alert.setView(input);
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            playerName = input.getText().toString();
+                            //call a unction/void which is using the public var playerName
+                        }
+                    });
+                    alert.show();
+                    nameAsked = false;
+                }
+
                 //canvas.drawColor(Color.argb(255,  26, 128, 182));
                 canvas.drawColor(colors[colNum]);
 
@@ -244,6 +270,16 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+        public String popUp()
+        {
+            nameAsked = true;
+            return playerName;
+        }
+
+        public void wonGame()
+        {
+
+        }
     }
 
     @Override

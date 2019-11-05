@@ -14,23 +14,24 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 
 public class Story {
-    static MainActivity.GameView gameView;
+    MainActivity.GameView gameView;
 
     View curView;
 
     String name;
 
+    TextView textView;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_main, container, false);
         curView = root;
+        textView = root.findViewById(R.id.main_text);
         return root;
     }
 
     public void playGame()
     {
-        final TextView textView = curView.findViewById(R.id.main_text);
-
         final Handler handler = new Handler();
 
         float x = gameView.getX();
@@ -50,24 +51,8 @@ public class Story {
                 }
             }, 5000);
 
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(gameView);
-
-            final EditText editText = curView.findViewById(R.id.name);
-
-            // set prompts.xml to alertdialog builder
-            alertDialogBuilder.setView(editText);
-
-            // set dialog message
-            alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                }
-            });
-
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            // show it
-            alertDialog.show();
-            String greeting = "Nice to meet you " + editText + "!";
+            name = gameView.popUp();
+            String greeting = "Nice to meet you " + name + "!";
             textView.setText(greeting);
             gameView.changeCanvas(1);
             handler.postDelayed(new Runnable() {
@@ -85,4 +70,32 @@ public class Story {
 
         }
     }
+
+    public void playRight()
+    {
+        final Handler handler = new Handler();
+
+        textView.setText("You found the treasure!");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("You win!");
+            }
+        }, 5000);
+        gameView.wonGame();
+    }
+
+    public void playLeft()
+    {
+        final Handler handler = new Handler();
+        textView.setText("You found the treasure!");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("You lose!");
+            }
+        }, 5000);
+
+    }
 }
+
