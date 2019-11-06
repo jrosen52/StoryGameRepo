@@ -1,5 +1,6 @@
 package com.example.storygame;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +13,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -22,6 +25,7 @@ import android.view.SurfaceView;
 
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -35,13 +39,38 @@ public class MainActivity extends AppCompatActivity
     public String playerName;
 
     public boolean nameAsked = false;
+    public boolean spidersReleased = false;
 
+    private Bitmap bmp;
+
+    Drawable spider;
+    Drawable blueChest;
+    Drawable redChest;
+    Drawable skel;
+    Drawable player;
+
+    public void Sprite(GameView gameView, Bitmap bmp) {
+
+        this.gameView=gameView;
+
+        this.bmp=bmp;
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         gameView = new GameView(this);
         story = new Story();
+
+        spider = getResources().getDrawable(R.drawable.spider);
+        player = getResources().getDrawable(R.drawable.slime);
+        skel = getResources().getDrawable(R.drawable.skeleton);
+        redChest = getResources().getDrawable(R.drawable.red);
+        blueChest = getResources().getDrawable(R.drawable.blue);
+
         setContentView(gameView);
 
     }
@@ -279,6 +308,11 @@ public class MainActivity extends AppCompatActivity
         public void wonGame()
         {
 
+        }
+
+        public void releaseSpiders()
+        {
+            spidersReleased = true;
         }
     }
 

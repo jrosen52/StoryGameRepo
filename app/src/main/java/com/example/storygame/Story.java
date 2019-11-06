@@ -88,14 +88,20 @@ public class Story {
     public void playLeft()
     {
         final Handler handler = new Handler();
-        textView.setText("You found the treasure!");
+        textView.setText("That's... not the treasure");
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                textView.setText("You lose!");
+                textView.setText("That chest has many spiders");
             }
         }, 5000);
-
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("Avoid the spiders!");
+            }
+        }, 5000);
+        gameView.releaseSpiders();
     }
 }
 
