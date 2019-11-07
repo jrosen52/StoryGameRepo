@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity
 
     public boolean nameAsked = false;
     public boolean spidersReleased = false;
+    public boolean snakesReleased = false;
+    public boolean skeletonsReleased = false;
 
     private Bitmap bmp;
 
@@ -151,11 +154,11 @@ public class MainActivity extends AppCompatActivity
             chest1 = new RectF(0,0,00,0);
             chest2 = new RectF(50,50,50,50);
 
-            paint.setColor(blue);
+            //paint.setColor(blue);
 
             //Canvas.drawRect(chest1, paint);
 
-            paint.setColor(blue);
+            //paint.setColor(blue);
 
             //Canvas.drawRect(chest2, paint);
 
@@ -224,7 +227,7 @@ public class MainActivity extends AppCompatActivity
             {
                 canvas = ourHolder.lockCanvas();
 
-                final Handler handler = new Handler();
+                final Handler handler = new Handler(Looper.getMainLooper());
 
                 if(nameAsked == true)
                 {
@@ -242,8 +245,8 @@ public class MainActivity extends AppCompatActivity
                     nameAsked = false;
                 }
 
-                //canvas.drawColor(Color.argb(255,  26, 128, 182));
-                canvas.drawColor(colors[colNum]);
+                canvas.drawColor(white);
+                //canvas.drawColor(colors[colNum]);
 
                 paint.setColor(Color.argb(255,  249, 129, 0));
 
@@ -314,6 +317,10 @@ public class MainActivity extends AppCompatActivity
         {
             spidersReleased = true;
         }
+
+        public void releaseSnakes() { snakesReleased = true;}
+
+        public void releaseSkeletons() { skeletonsReleased = true;}
     }
 
     @Override

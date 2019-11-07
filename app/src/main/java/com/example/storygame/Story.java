@@ -34,7 +34,7 @@ public class Story {
     {
         final Handler handler = new Handler();
 
-        float x = gameView.getX();
+        float x = 40;
         if(x == 50)
         {
             textView.setText("Hello Adventurer!");
@@ -64,14 +64,14 @@ public class Story {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    textView.setText("you'll find it in the bottom right corner.");
+                    textView.setText("you'll find it in the red chest.");
                 }
             }, 5000);
 
         }
     }
 
-    public void playRight()
+    public void playRed()
     {
         final Handler handler = new Handler();
 
@@ -85,7 +85,7 @@ public class Story {
         gameView.wonGame();
     }
 
-    public void playLeft()
+    public void playBlue1()
     {
         final Handler handler = new Handler();
         textView.setText("That's... not the treasure");
@@ -102,6 +102,43 @@ public class Story {
             }
         }, 5000);
         gameView.releaseSpiders();
+    }
+
+    public void playBlue2()
+    {
+        final Handler handler = new Handler();
+        textView.setText("Why did you open it again!?");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("Now you've woken up the snakes!");
+            }
+        }, 5000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("Avoid the snakes!");
+            }
+        }, 5000);
+
+    }
+
+    public void playBlue3()
+    {
+        final Handler handler = new Handler();
+        textView.setText("I can't believe you've done this");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("The dead are rising from their grave!s");
+            }
+        }, 5000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("Avoid the skeletons!");
+            }
+        }, 5000);
     }
 }
 
