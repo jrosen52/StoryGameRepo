@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 
     public String playerName;
 
-    public boolean nameAsked = false;
+    public boolean nameAsked = true;
     public boolean spidersReleased = false;
     public boolean snakesReleased = false;
     public boolean skeletonsReleased = false;
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     Drawable rock2;
     Drawable skulls;
     Drawable grave;
+    Drawable snake;
 
     public TextView endText;
     public TextView coors;
@@ -70,6 +71,10 @@ public class MainActivity extends AppCompatActivity
 
     int curX = 0;
     int curY = 0;
+
+    int spiderCounter = 15;
+    int snakeCounter = 15;
+    int skelCounter = 15;
 
     public void Sprite(GameView gameView, Bitmap bmp) {
 
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity
         rock2 = getResources().getDrawable(R.drawable.rock2);
         grave = getResources().getDrawable(R.drawable.grave);
         skulls = getResources().getDrawable(R.drawable.skulls);
+        snake = getResources().getDrawable(R.drawable.snake);
 
         coors = (TextView) findViewById(R.id.coor);
 
@@ -210,7 +216,7 @@ public class MainActivity extends AppCompatActivity
             bitmapSlime = Bitmap.createScaledBitmap(bitmapSlime, frameWidth * frameCount, frameHeight, false);
 
             bitmapSpider = BitmapFactory.decodeResource(this.getResources(), R.drawable.spider);
-            bitmapSpider = Bitmap.createScaledBitmap(bitmapSpider, 100, 50, false);
+            bitmapSpider = Bitmap.createScaledBitmap(bitmapSpider, 30 * frameCount, 100, false);
 
             bitmapRed = BitmapFactory.decodeResource(this.getResources(), R.drawable.red);
             bitmapRed = Bitmap.createScaledBitmap(bitmapRed, 40 * frameCount, 140, false);
@@ -229,6 +235,14 @@ public class MainActivity extends AppCompatActivity
 
             bitmapGrave = BitmapFactory.decodeResource(this.getResources(), R.drawable.grave);
             bitmapGrave = Bitmap.createScaledBitmap(bitmapGrave, 40 * frameCount, 140, false);
+
+            bitmapSnake = BitmapFactory.decodeResource(this.getResources(), R.drawable.snake);
+            bitmapSnake = Bitmap.createScaledBitmap(bitmapSnake, 30 * frameCount, 100, false);
+
+            bitmapSkeleton = BitmapFactory.decodeResource(this.getResources(), R.drawable.skeleton);
+            bitmapSkeleton = Bitmap.createScaledBitmap(bitmapSkeleton, 20 * frameCount, 125, false);
+
+
 
 
         }
@@ -302,6 +316,7 @@ public class MainActivity extends AppCompatActivity
 
                 if(nameAsked == true)
                 {
+                    Looper.prepare();
                     AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                     alert.setMessage("Your Name");
                     final EditText input = new EditText(MainActivity.this);
@@ -315,18 +330,27 @@ public class MainActivity extends AppCompatActivity
                     alert.show();
                     nameAsked = false;
                 }
-                canvas.drawBitmap(bitmapSpider, 500, 500, paint);
                 if(spidersReleased == true)
                 {
                     canvas.drawBitmap(bitmapSpider, 500, 500, paint);
+                    if(spiderCounter == 0)
+                    {
+                        spidersReleased = false;
+                    }
                 }
                 if(snakesReleased == true)
                 {
-
+                    if(snakeCounter == 0)
+                    {
+                        snakesReleased = false;
+                    }
                 }
                 if(skeletonsReleased == true)
                 {
-
+                    if(skelCounter == 0)
+                    {
+                        skeletonsReleased = false;
+                    }
                 }
 
                 canvas.drawColor(Color.DKGRAY);
@@ -337,22 +361,28 @@ public class MainActivity extends AppCompatActivity
 
                 paint.setColor(Color.argb(255,  249, 129, 0));
 
-                paint.setTextSize(45);
+                paint.setTextSize(60);
 
-                canvas.drawText("X " + screenX + ", Y " + screenY, 20, 40, paint);
-                canvas.drawText("CurX " + curX + ", CurY " + curY, 20, 80, paint);
+                //canvas.drawText("X " + screenX + ", Y " + screenY, 20, 40, paint);
+                canvas.drawText("Welcome to the spooky dungeon!", 100, 60, paint);
+                //canvas.drawText("CurX " + curX + ", CurY " + curY, 20, 80, paint);
 
                 whereToDraw.set((int)slimeXPosition, slimeYPosition, (int)slimeXPosition + frameWidth, (int)slimeYPosition+frameHeight);
 
                 getCurrentFrame();
 
-                canvas.drawBitmap(bitmapSlime, frameToDraw, whereToDraw, paint);
+
                 canvas.drawBitmap(bitmapRed, 30, 1400, paint);
                 canvas.drawBitmap(bitmapBlue, 850, 1400, paint);
                 canvas.drawBitmap(bitmapRock1, 750, 300, paint);
+                canvas.drawBitmap(bitmapRock1, 900, 1000, paint);
+                canvas.drawBitmap(bitmapSkulls, 200, 300, paint);
                 canvas.drawBitmap(bitmapRock2, 160, 600, paint);
+                canvas.drawBitmap(bitmapRock2, 700, 775, paint);
                 canvas.drawBitmap(bitmapSkulls, 400, 1100, paint);
-                canvas.drawBitmap(bitmapGrave, 525, 1400, paint);
+                canvas.drawBitmap(bitmapGrave, 525, 1350, paint);
+                canvas.drawBitmap(bitmapGrave, 200, 900, paint);
+                canvas.drawBitmap(bitmapSlime, frameToDraw, whereToDraw, paint);
                 //canvas.drawBitmap(bitmapSlime, null, new RectF(0, 0, screenX/2, screenY/2), null);
 
                 ourHolder.unlockCanvasAndPost(canvas);
@@ -473,9 +503,15 @@ public class MainActivity extends AppCompatActivity
             spidersReleased = true;
         }
 
-        public void releaseSnakes() { snakesReleased = true;}
+        public void releaseSnakes()
+        {
+            snakesReleased = true;
+        }
 
-        public void releaseSkeletons() { skeletonsReleased = true;}
+        public void releaseSkeletons()
+        {
+            skeletonsReleased = true;
+        }
     }
 
     @Override
