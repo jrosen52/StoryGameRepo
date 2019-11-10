@@ -82,7 +82,7 @@ public class Story {
                 textView.setText("You win!");
             }
         }, 5000);
-        gameView.wonGame();
+        gameView.wonGame(1);
     }
 
     public void playBlue1()
@@ -120,6 +120,7 @@ public class Story {
                 textView.setText("Avoid the snakes!");
             }
         }, 5000);
+        gameView.releaseSnakes();
 
     }
 
@@ -130,7 +131,7 @@ public class Story {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                textView.setText("The dead are rising from their grave!s");
+                textView.setText("The dead are rising from their graves!");
             }
         }, 5000);
         handler.postDelayed(new Runnable() {
@@ -139,6 +140,38 @@ public class Story {
                 textView.setText("Avoid the skeletons!");
             }
         }, 5000);
+        gameView.releaseSkeletons();
+    }
+
+    public void playBlue4()
+    {
+        final Handler handler = new Handler();
+        textView.setText("No No No! Now You've done it!");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("You just released the ...");
+            }
+        }, 5000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("Wait. I think that's it.");
+            }
+        }, 5000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("That must mean you win!");
+            }
+        }, 5000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("But you still don't get treasure");
+            }
+        }, 5000);
+        gameView.wonGame(0);
     }
 }
 

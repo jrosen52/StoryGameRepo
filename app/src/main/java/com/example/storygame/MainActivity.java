@@ -27,6 +27,7 @@ import android.view.SurfaceView;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -52,11 +53,19 @@ public class MainActivity extends AppCompatActivity
     Drawable skel;
     Drawable player;
 
+    public TextView endText;
+
     public void Sprite(GameView gameView, Bitmap bmp) {
 
         this.gameView=gameView;
 
         this.bmp=bmp;
+
+    }
+
+    public void enemeyWave(Drawable enemy)
+    {
+        Drawable curEnemy = enemy;
 
     }
 
@@ -308,9 +317,40 @@ public class MainActivity extends AppCompatActivity
             return playerName;
         }
 
-        public void wonGame()
+        public void wonGame(int num)
         {
-
+            endText.setText("You win!");
+            final Handler handler = new Handler();
+            if(num == 0)
+            {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        endText.setText("But you get no treasure");
+                    }
+                }, 5000);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        endText.setText("Bad ending! (I guess)");
+                    }
+                }, 5000);
+            }
+            else if(num == 1)
+            {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        endText.setText("You found the treasure!");
+                    }
+                }, 5000);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        endText.setText("Good ending!");
+                    }
+                }, 5000);
+            }
         }
 
         public void releaseSpiders()
