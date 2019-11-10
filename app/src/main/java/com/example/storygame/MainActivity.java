@@ -54,6 +54,15 @@ public class MainActivity extends AppCompatActivity
     Drawable player;
 
     public TextView endText;
+    public TextView coors;
+
+    public final int LEFT = 1;
+    public final int RIGHT = 2;
+    public final int UP = 3;
+    public final int DOWN = 4;
+
+    int screenX;
+    int screenY;
 
     public void Sprite(GameView gameView, Bitmap bmp) {
 
@@ -83,6 +92,8 @@ public class MainActivity extends AppCompatActivity
         redChest = getResources().getDrawable(R.drawable.red);
         blueChest = getResources().getDrawable(R.drawable.blue);
 
+        coors = (TextView) findViewById(R.id.coor);
+
         setContentView(gameView);
 
     }
@@ -104,11 +115,16 @@ public class MainActivity extends AppCompatActivity
 
         Bitmap bitmapSlime;
 
+        boolean isMovingLeft = false;
+        boolean isMovingRight = false;
+        boolean isMovingUp = false;
+        boolean isMovingDown = false;
         boolean isMoving = false;
 
         float walkSpeedPerSecond = 250;
 
         float slimeXPosition = 10;
+        float slimeYPosition = 10;
 
         private int frameWidth = 100;
         private int frameHeight = 50;
@@ -138,20 +154,18 @@ public class MainActivity extends AppCompatActivity
                 Color.argb(255, 250, 193, 58), Color.argb(255, 225, 58, 250)};
 
 
-        private Rect frameToDraw = new Rect(
-                0,
-                0,
-                frameWidth,
-                frameHeight);
+        private Rect frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
 
-        RectF whereToDraw = new RectF(
-                slimeXPosition,                0,
-                slimeXPosition + frameWidth,
-                frameHeight);
+        RectF whereToDraw = new RectF(slimeXPosition,slimeYPosition, slimeXPosition + frameWidth, slimeYPosition+frameHeight);
 
         public float getX()
         {
             return slimeXPosition;
+        }
+
+        public float getY()
+        {
+            return slimeYPosition;
         }
 
         public GameView(Context context) {
@@ -206,8 +220,17 @@ public class MainActivity extends AppCompatActivity
 
         public void update()
         {
-            if(isMoving){
+            if(isMovingRight){
                 slimeXPosition = slimeXPosition + (walkSpeedPerSecond / fps);
+            }
+            if(isMovingLeft){
+                slimeXPosition = slimeXPosition - (walkSpeedPerSecond / fps);
+            }
+            if(isMovingUp){
+                slimeYPosition = slimeXPosition + (walkSpeedPerSecond / fps);
+            }
+            if(isMovingDown){
+                slimeYPosition = slimeXPosition - (walkSpeedPerSecond / fps);
             }
 
         }
@@ -254,7 +277,7 @@ public class MainActivity extends AppCompatActivity
                     nameAsked = false;
                 }
 
-                canvas.drawColor(white);
+                canvas.drawColor(blue);
                 //canvas.drawColor(colors[colNum]);
 
                 paint.setColor(Color.argb(255,  249, 129, 0));
@@ -263,10 +286,7 @@ public class MainActivity extends AppCompatActivity
 
                 canvas.drawText("FPS:" + fps, 20, 40, paint);
 
-                whereToDraw.set((int)slimeXPosition,
-                        0,
-                        (int)slimeXPosition + frameWidth,
-                        frameHeight);
+                whereToDraw.set((int)slimeXPosition, slimeYPosition, (int)slimeXPosition + frameWidth, (int)slimeYPosition+frameHeight);
 
                 getCurrentFrame();
 
@@ -298,14 +318,41 @@ public class MainActivity extends AppCompatActivity
         @Override
         public boolean onTouchEvent(MotionEvent motionEvent) {
 
+            float x = motionEvent.getX();
+
+            float y = motionEvent.getY();
+
+            String coorNums = (int)x + ", " + (int)y;
+            //coors.setText(coorNums);
+
             switch (motionEvent.getAction() & MotionEvent.ACTION_MASK)
             {
                 case MotionEvent.ACTION_DOWN:
                     isMoving = true;
+                    if(motionEvent.getX() > screenX / 2)
+                    {
+                        isMovingRight = true;
+                    }
+                    if(motionEvent.getX() <= screenX / 2)
+                    {
+                        isMovingLeft = true;
+                    }
+                    if(motionEvent.getY() > screenY / 2)
+                    {
+                        isMovingUp = true;
+                    }
+                    if(motionEvent.getY() <= screenY / 2)
+                    {
+                        isMovingDown = true;
+                    }
                     break;
 
                 case MotionEvent.ACTION_UP:
                     isMoving = false;
+                    isMovingDown = false;
+                    isMovingUp = false;
+                    isMovingLeft = false;
+                    isMovingRight = false;
                     break;
             }
             return true;
