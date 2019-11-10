@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity
     Drawable redChest;
     Drawable skel;
     Drawable player;
+    Drawable rock1;
+    Drawable rock2;
+    Drawable skulls;
+    Drawable grave;
 
     public TextView endText;
     public TextView coors;
@@ -63,6 +67,9 @@ public class MainActivity extends AppCompatActivity
 
     int screenX;
     int screenY;
+
+    int curX = 0;
+    int curY = 0;
 
     public void Sprite(GameView gameView, Bitmap bmp) {
 
@@ -91,6 +98,10 @@ public class MainActivity extends AppCompatActivity
         skel = getResources().getDrawable(R.drawable.skeleton);
         redChest = getResources().getDrawable(R.drawable.red);
         blueChest = getResources().getDrawable(R.drawable.blue);
+        rock1 = getResources().getDrawable(R.drawable.rocks);
+        rock2 = getResources().getDrawable(R.drawable.rock2);
+        grave = getResources().getDrawable(R.drawable.grave);
+        skulls = getResources().getDrawable(R.drawable.skulls);
 
         coors = (TextView) findViewById(R.id.coor);
 
@@ -114,6 +125,15 @@ public class MainActivity extends AppCompatActivity
         private long timeThisFrame;
 
         Bitmap bitmapSlime;
+        Bitmap bitmapRed;
+        Bitmap bitmapBlue;
+        Bitmap bitmapSpider;
+        Bitmap bitmapSkeleton;
+        Bitmap bitmapSnake;
+        Bitmap bitmapRock1;
+        Bitmap bitmapRock2;
+        Bitmap bitmapGrave;
+        Bitmap bitmapSkulls;
 
         boolean isMovingLeft = false;
         boolean isMovingRight = false;
@@ -121,13 +141,13 @@ public class MainActivity extends AppCompatActivity
         boolean isMovingDown = false;
         boolean isMoving = false;
 
-        float walkSpeedPerSecond = 250;
+        float walkSpeedPerSecond = 300;
 
         float slimeXPosition = 10;
         float slimeYPosition = 10;
 
-        private int frameWidth = 100;
-        private int frameHeight = 50;
+        private int frameWidth = 200;
+        private int frameHeight = 100;
 
         private int frameCount = 5;
 
@@ -186,11 +206,30 @@ public class MainActivity extends AppCompatActivity
             //Canvas.drawRect(chest2, paint);
 
             // Load Bob from his .png file
-            bitmapSlime = BitmapFactory.decodeResource(this.getResources(), R.drawable.slime);
-            bitmapSlime = Bitmap.createScaledBitmap(bitmapSlime,
-                    frameWidth * frameCount,
-                    frameHeight,
-                    false);
+            bitmapSlime = BitmapFactory.decodeResource(this.getResources(), R.drawable.bob);
+            bitmapSlime = Bitmap.createScaledBitmap(bitmapSlime, frameWidth * frameCount, frameHeight, false);
+
+            bitmapSpider = BitmapFactory.decodeResource(this.getResources(), R.drawable.spider);
+            bitmapSpider = Bitmap.createScaledBitmap(bitmapSpider, 100, 50, false);
+
+            bitmapRed = BitmapFactory.decodeResource(this.getResources(), R.drawable.red);
+            bitmapRed = Bitmap.createScaledBitmap(bitmapRed, 40 * frameCount, 140, false);
+
+            bitmapBlue = BitmapFactory.decodeResource(this.getResources(), R.drawable.blue);
+            bitmapBlue = Bitmap.createScaledBitmap(bitmapBlue, 40 * frameCount, 140, false);
+
+            bitmapRock1 = BitmapFactory.decodeResource(this.getResources(), R.drawable.rocks);
+            bitmapRock1 = Bitmap.createScaledBitmap(bitmapRock1, 40 * frameCount, 140, false);
+
+            bitmapRock2 = BitmapFactory.decodeResource(this.getResources(), R.drawable.rock2);
+            bitmapRock2 = Bitmap.createScaledBitmap(bitmapRock2, 40 * frameCount, 140, false);
+
+            bitmapSkulls = BitmapFactory.decodeResource(this.getResources(), R.drawable.skulls);
+            bitmapSkulls = Bitmap.createScaledBitmap(bitmapSkulls, 40 * frameCount, 140, false);
+
+            bitmapGrave = BitmapFactory.decodeResource(this.getResources(), R.drawable.grave);
+            bitmapGrave = Bitmap.createScaledBitmap(bitmapGrave, 40 * frameCount, 140, false);
+
 
         }
 
@@ -227,10 +266,10 @@ public class MainActivity extends AppCompatActivity
                 slimeXPosition = slimeXPosition - (walkSpeedPerSecond / fps);
             }
             if(isMovingUp){
-                slimeYPosition = slimeXPosition + (walkSpeedPerSecond / fps);
+                slimeYPosition = slimeYPosition - (walkSpeedPerSecond / fps);
             }
             if(isMovingDown){
-                slimeYPosition = slimeXPosition - (walkSpeedPerSecond / fps);
+                slimeYPosition = slimeYPosition + (walkSpeedPerSecond / fps);
             }
 
         }
@@ -276,23 +315,45 @@ public class MainActivity extends AppCompatActivity
                     alert.show();
                     nameAsked = false;
                 }
+                canvas.drawBitmap(bitmapSpider, 500, 500, paint);
+                if(spidersReleased == true)
+                {
+                    canvas.drawBitmap(bitmapSpider, 500, 500, paint);
+                }
+                if(snakesReleased == true)
+                {
 
-                canvas.drawColor(blue);
+                }
+                if(skeletonsReleased == true)
+                {
+
+                }
+
+                canvas.drawColor(Color.DKGRAY);
+
+                screenX = canvas.getWidth();
+                screenY = canvas.getHeight();
                 //canvas.drawColor(colors[colNum]);
 
                 paint.setColor(Color.argb(255,  249, 129, 0));
 
                 paint.setTextSize(45);
 
-                canvas.drawText("FPS:" + fps, 20, 40, paint);
+                canvas.drawText("X " + screenX + ", Y " + screenY, 20, 40, paint);
+                canvas.drawText("CurX " + curX + ", CurY " + curY, 20, 80, paint);
 
                 whereToDraw.set((int)slimeXPosition, slimeYPosition, (int)slimeXPosition + frameWidth, (int)slimeYPosition+frameHeight);
 
                 getCurrentFrame();
 
-                canvas.drawBitmap(bitmapSlime,
-                        frameToDraw,
-                        whereToDraw, paint);
+                canvas.drawBitmap(bitmapSlime, frameToDraw, whereToDraw, paint);
+                canvas.drawBitmap(bitmapRed, 30, 1400, paint);
+                canvas.drawBitmap(bitmapBlue, 850, 1400, paint);
+                canvas.drawBitmap(bitmapRock1, 750, 300, paint);
+                canvas.drawBitmap(bitmapRock2, 160, 600, paint);
+                canvas.drawBitmap(bitmapSkulls, 400, 1100, paint);
+                canvas.drawBitmap(bitmapGrave, 525, 1400, paint);
+                //canvas.drawBitmap(bitmapSlime, null, new RectF(0, 0, screenX/2, screenY/2), null);
 
                 ourHolder.unlockCanvasAndPost(canvas);
             }
@@ -315,6 +376,11 @@ public class MainActivity extends AppCompatActivity
             gameThread.start();
         }
 
+        public void spiderWave()
+        {
+
+        }
+
         @Override
         public boolean onTouchEvent(MotionEvent motionEvent) {
 
@@ -328,20 +394,22 @@ public class MainActivity extends AppCompatActivity
             switch (motionEvent.getAction() & MotionEvent.ACTION_MASK)
             {
                 case MotionEvent.ACTION_DOWN:
+                    curX = (int)motionEvent.getX();
+                    curY = (int)motionEvent.getY();
                     isMoving = true;
-                    if(motionEvent.getX() > screenX / 2)
+                    if(motionEvent.getX() > 540)
                     {
                         isMovingRight = true;
                     }
-                    if(motionEvent.getX() <= screenX / 2)
+                    if(motionEvent.getX() <= 540)
                     {
                         isMovingLeft = true;
                     }
-                    if(motionEvent.getY() > screenY / 2)
+                    if(motionEvent.getY() < 768)
                     {
                         isMovingUp = true;
                     }
-                    if(motionEvent.getY() <= screenY / 2)
+                    if(motionEvent.getY() >= 768)
                     {
                         isMovingDown = true;
                     }
