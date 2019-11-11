@@ -29,6 +29,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity
 {
 
@@ -73,8 +75,10 @@ public class MainActivity extends AppCompatActivity
     int curY = 0;
 
     int spiderCounter = 15;
-    int snakeCounter = 15;
-    int skelCounter = 15;
+    int snakeCounter = 20;
+    int skelCounter = 25;
+
+    int lives = 3;
 
     public void Sprite(GameView gameView, Bitmap bmp) {
 
@@ -332,24 +336,41 @@ public class MainActivity extends AppCompatActivity
                 }
                 if(spidersReleased == true)
                 {
-                    canvas.drawBitmap(bitmapSpider, 500, 500, paint);
+                    Random r = new Random();
+                    int xCoor = r.nextInt(1080);
+                    int yCoor = r.nextInt(1536);
+                    canvas.drawBitmap(bitmapSpider, xCoor, yCoor, paint);
+                    spiderCounter--;
                     if(spiderCounter == 0)
                     {
                         spidersReleased = false;
+                        story.playBlue2();
                     }
                 }
                 if(snakesReleased == true)
                 {
-                    if(snakeCounter == 0)
+                    Random r = new Random();
+                    int xCoor = r.nextInt(1080);
+                    int yCoor = r.nextInt(1536);
+                    canvas.drawBitmap(bitmapSnake, xCoor, yCoor, paint);
+                    snakeCounter--;
+                    if(spiderCounter == 0)
                     {
                         snakesReleased = false;
+                        story.playBlue3();
                     }
                 }
                 if(skeletonsReleased == true)
                 {
+                    Random r = new Random();
+                    int xCoor = r.nextInt(1080);
+                    int yCoor = r.nextInt(1536);
+                    canvas.drawBitmap(bitmapSpider, xCoor, yCoor, paint);
+                    skelCounter--;
                     if(skelCounter == 0)
                     {
                         skeletonsReleased = false;
+                        story.playBlue4();
                     }
                 }
 
@@ -496,6 +517,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }, 5000);
             }
+            gameView.pause();
         }
 
         public void releaseSpiders()
